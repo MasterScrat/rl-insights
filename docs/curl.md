@@ -3,7 +3,7 @@
 
 !!! tldr
     - CURL improves the sample efficiency when learning from pixels by using contrastive learning, a self-supervised method, as an auxiliary task. 
-    - The contrastive objective works similarly to the SimCLR framework, using random cropping as an augmentation method.
+    - The CURL contrastive objective works in a similar way as the SimCLR framework, using random cropping as an augmentation method.
     - After 100k interactions, CURL outperforms all other methods on DM Control Suite, and shows strong results on Atari games.  
 
     **April 2020 - [arXiv](https://arxiv.org/abs/2004.04136) - [Code](https://github.com/MishaLaskin/curl)**
@@ -22,7 +22,7 @@ On the other hand, let's have a look at results using Atari games as a benchmark
 
 ![Rainbow benchmarks](img/curl_rainbow.png)
 
-This low sample-efficiency is clearly a problem. Not only does it mean the experiment turn-around time is excessive, it also means that there can be little hope of bringing such methods to the real world. Can you imagine having to collect billions of real-world interactions?
+This low sample-efficiency is clearly a problem. Not only does it mean the experiment turn-around time is excessive, it also means that there can be little hope of bringing such methods to the real world. Can you imagine having to collect a billion real-world interactions?
 
 The paper we are considering takes a stab at this problem by bringing recent advances from vision and NLP to reinforcement learning. Contrastive learning takes advantage of data augmentation to learn more efficiently. CURL shows that it can be very useful in the context of RL to learn a good latent representation faster.
 
@@ -34,7 +34,7 @@ The core idea is to compare (contrast!) pairs of augmented samples. We consider 
 - **Positive pairs** consist of two different augmentations of the *same sample* 
 - **Negative pairs** contain augmentations of two *different samples*
 
-For each original sample, we create sets of positive and negative pairs. The contrastive representation is then learned by maximizing the agreement between positive pairs, and minimizing the agreement between negative pairs.
+For each original sample, we create both positive and negative pairs. The contrastive representation is then learned by maximizing the agreement between positive pairs, and minimizing the agreement between negative pairs.
 
 Contrastive learning has seen dramatic progress in recent years for language and vision. See for example BERT, an application to masked language modeling[^bert], or the SimCLR framework, used to learn visual representations[^simclr]. 
 
@@ -57,8 +57,8 @@ The illustration below gives an example of a positive pair: the same observation
 Evaluation
 ---
 
-Using a contrastive objective as an auxiliary task significantly improves the performance of the RL algorithm. 
-The performance is evaluated in two settings:
+Using a contrastive objective as an auxiliary task appears to significantly improve the performance of the RL algorithm. 
+CURL's performance is evaluated in two settings:
 
 - with [SAC](sac.md) on DeepMind Control Suite (continuous control)
 - with data-efficient [Rainbow DQN](rainbow.md) on Atari games (discrete control). 
