@@ -789,6 +789,7 @@ The performance is evaluated in two settings:</p>
 (The last column, <em>State SAC</em>, uses physical states and is used as an "oracle" upper-bound.)</p>
 <p>Results are very good on Atari games. This is again after 100k interactions: <sup id="fnref4:paper-screenshot"><a class="footnote-ref" href="#fn:paper-screenshot">7</a></sup>
 <img alt="atari" src="../img/curl_atari.png" /></p>
+<p>How can this difference in performance be explained? One idea explored in the appendix is that in some environments, there is simply not enough information to fully recover the state when looking only at the pixel data: the problem becomes <strong>partially observable</strong>.  </p>
 <h3 id="key-concepts">Key concepts</h3>
 <p>"Building blocks" involved in this work:</p>
 <ul>
