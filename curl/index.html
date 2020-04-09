@@ -288,36 +288,30 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#paper-summary" class="md-nav__link">
-    Paper summary
+  <a href="#what-is-this-about" class="md-nav__link">
+    What is this about?
   </a>
   
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
+</li>
+      
+        <li class="md-nav__item">
   <a href="#what-is-contrastive-learning" class="md-nav__link">
     What is contrastive learning?
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#how-curl-works" class="md-nav__link">
     How CURL works
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#evaluation" class="md-nav__link">
     Evaluation
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -674,36 +668,30 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#paper-summary" class="md-nav__link">
-    Paper summary
+  <a href="#what-is-this-about" class="md-nav__link">
+    What is this about?
   </a>
   
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
+</li>
+      
+        <li class="md-nav__item">
   <a href="#what-is-contrastive-learning" class="md-nav__link">
     What is contrastive learning?
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#how-curl-works" class="md-nav__link">
     How CURL works
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#evaluation" class="md-nav__link">
     Evaluation
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -757,31 +745,38 @@
                 <h1 id="curl-contrastive-unsupervised-representations-for-reinforcement-learning">CURL: Contrastive Unsupervised Representations for Reinforcement Learning</h1>
 <div class="admonition tldr">
 <p class="admonition-title">Tldr</p>
-<p>CURL improves the sample efficiency of model-free RL methods when learning from pixels by using a <strong>contrastive objective</strong> as an auxiliary task. 
-The contrastive objective uses simple cropping as an augmentation method.
-After 100k interactions, CURL outperforms all other methods on DM Control Suite and shows strong results on Atari games.  </p>
+<ul>
+<li>CURL improves the sample efficiency when learning from pixels by using contrastive learning, a self-supervised method, as an auxiliary task. </li>
+<li>The contrastive objective works similarly to the SimCLR framework, using random cropping as an augmentation method.</li>
+<li>After 100k interactions, CURL outperforms all other methods on DM Control Suite, and shows strong results on Atari games.  </li>
+</ul>
 <p><strong>April 2020 - <a href="https://arxiv.org/abs/2004.04136">arXiv</a> - <a href="https://github.com/MishaLaskin/curl">Code</a></strong></p>
 </div>
-<h3 id="paper-summary">Paper summary</h3>
-<p>CURL improves the sample efficiency when learning from pixels by using contrastive learning, a self-supervised method, as an auxiliary task. 
-This method can be combined with any model-free RL algorithm. </p>
-<h4 id="what-is-contrastive-learning">What is contrastive learning?</h4>
+<h3 id="what-is-this-about">What is this about?</h3>
+<p>In reinforcement learning, solving a task <em>from pixels</em> is generally much harder than solving an equivalent task using physical features such as coordinates and angles. This makes a lot of sense: you can consider an image as a high-dimensional vector containing hundreds of features, which don't have any clear connection with the goal of the environment!</p>
+<p>As a result, you generally need a lot more interactions between an agent and its environment in order to learn a good policy. For example, the figure below shows the results of multiple recent RL methods on the DeepMind Control Suite, learning from physical features. Take a look the X axis: depending on the complexity of the task, the agents are trained from 1 to 10 million interactions: <sup id="fnref:sac"><a class="footnote-ref" href="#fn:sac">1</a></sup> </p>
+<p><img alt="SAC benchmarks" src="../img/curl_sac.png" /></p>
+<p>On the other, let's have a look at results using Atari games as a benchmark. There is no notion of "physical" features with the Atari emulator: the only observations the agent can work with are RGB images. The agents now have to be trained for a staggering 200 million frames!<sup id="fnref:rainbow"><a class="footnote-ref" href="#fn:rainbow">2</a></sup> Some distributed approaches even consider numbers up to a billion. </p>
+<p><img alt="Rainbow benchmarks" src="../img/curl_rainbow.png" /></p>
+<p>This low sample-efficiency is clearly a problem. Not only does it mean the experiment turn-around time is excessive, it also means that there can be little hope of bringing such methods to real-world problems. Can you imagine having to collect billions of real-world interactions?</p>
+<p>The paper we are considering takes a stab at this problem by bringing recent advances from vision and NLP to reinforcement learning. Contrastive learning takes advantage of data augmentation to learn more efficiently. CURL shows that it can be very useful in the context of RL to learn a good latent representation faster.</p>
+<h3 id="what-is-contrastive-learning">What is contrastive learning?</h3>
 <p>The core idea is to compare (contrast!) pairs of augmented samples. There are two kinds of such pairs:</p>
 <ul>
 <li><strong>Positive pairs</strong> consist of two different augmentations of the <em>same sample</em> </li>
 <li><strong>Negative pairs</strong> contain augmentations of two <em>different samples</em></li>
 </ul>
 <p>The contrastive representation is then learned by maximizing the agreement between positive pairs, and minimizing the agreement between negative pairs</p>
-<p>Contrastive learning has seen dramatic progress in recent years for language and vision - see for example BERT which is an application to masked language modeling<sup id="fnref:bert"><a class="footnote-ref" href="#fn:bert">1</a></sup>, or the SimCLR framework used to learn visual representations<sup id="fnref:simclr"><a class="footnote-ref" href="#fn:simclr">2</a></sup>. </p>
-<p>The way contrastive learning is implemented in CURL is mostly influenced by the SimCLR framework<sup id="fnref2:simclr"><a class="footnote-ref" href="#fn:simclr">2</a></sup>, Momentum Contrast (MoCo)<sup id="fnref:moco"><a class="footnote-ref" href="#fn:moco">3</a></sup> and Contrastive Predictive Coding (CPC)<sup id="fnref:cpc"><a class="footnote-ref" href="#fn:cpc">4</a></sup>.</p>
-<h4 id="how-curl-works">How CURL works</h4>
-<p>With CURL, the same latent representation is used for both the RL algorithm and the contrastive learning, as illustrated below: <sup id="fnref:paper-screenshot"><a class="footnote-ref" href="#fn:paper-screenshot">5</a></sup></p>
+<p>Contrastive learning has seen dramatic progress in recent years for language and vision - see for example BERT which is an application to masked language modeling<sup id="fnref:bert"><a class="footnote-ref" href="#fn:bert">3</a></sup>, or the SimCLR framework used to learn visual representations<sup id="fnref:simclr"><a class="footnote-ref" href="#fn:simclr">4</a></sup>. </p>
+<p>The way contrastive learning is implemented in CURL is mostly influenced by the SimCLR framework<sup id="fnref2:simclr"><a class="footnote-ref" href="#fn:simclr">4</a></sup>, Momentum Contrast (MoCo)<sup id="fnref:moco"><a class="footnote-ref" href="#fn:moco">5</a></sup> and Contrastive Predictive Coding (CPC)<sup id="fnref:cpc"><a class="footnote-ref" href="#fn:cpc">6</a></sup>.</p>
+<h3 id="how-curl-works">How CURL works</h3>
+<p>With CURL, the same latent representation is used for both the RL algorithm and the contrastive learning, as illustrated below: <sup id="fnref:paper-screenshot"><a class="footnote-ref" href="#fn:paper-screenshot">7</a></sup></p>
 <p><img alt="CURL diagram" src="../img/curl_diagram.png" /></p>
 <p>CURL exclusively uses random crops to augment the observations. 
 Since most RL methods use frame-stacking, each observation is effectively a "stack" of sequential images. CURL preserves their temporal structure by applying the same augmentation to each frame in the stack. </p>
-<p>The illustration below gives an example of a positive pair: the same observation is augmented in two different ways. The representation will be changed in a way that maximizes their agreement. <sup id="fnref2:paper-screenshot"><a class="footnote-ref" href="#fn:paper-screenshot">5</a></sup></p>
+<p>The illustration below gives an example of a positive pair: the same observation is augmented in two different ways. The representation will be changed in a way that maximizes their agreement. <sup id="fnref2:paper-screenshot"><a class="footnote-ref" href="#fn:paper-screenshot">7</a></sup></p>
 <p><img alt="cropping augmentation" src="../img/curl_augment.png" /></p>
-<h4 id="evaluation">Evaluation</h4>
+<h3 id="evaluation">Evaluation</h3>
 <p>Using a contrastive objective as an auxiliary task significantly improves the performance of the underlying RL algorithm. 
 The performance is evaluated in two settings:</p>
 <ul>
@@ -789,10 +784,10 @@ The performance is evaluated in two settings:</p>
 <li>with data-efficient <a href="../rainbow/">Rainbow DQN</a> on Atari games (discrete control). </li>
 </ul>
 <p>In both cases, the performance is evaluated after 100k iterations, as the goal is to evaluate sample efficiency rather than asymptotic performance. </p>
-<p>Results are remarkable on DeepMind Control Suite : <sup id="fnref3:paper-screenshot"><a class="footnote-ref" href="#fn:paper-screenshot">5</a></sup>
+<p>Results are remarkable on DeepMind Control Suite : <sup id="fnref3:paper-screenshot"><a class="footnote-ref" href="#fn:paper-screenshot">7</a></sup>
 <img alt="dmcs" src="../img/curl_dmc.png" />
 (The last column, <em>State SAC</em>, uses physical states and is used as an "oracle" upper-bound.)</p>
-<p>Results are very good on Atari games: <sup id="fnref4:paper-screenshot"><a class="footnote-ref" href="#fn:paper-screenshot">5</a></sup>
+<p>Results are very good on Atari games: <sup id="fnref4:paper-screenshot"><a class="footnote-ref" href="#fn:paper-screenshot">7</a></sup>
 <img alt="atari" src="../img/curl_atari.png" /></p>
 <h3 id="key-concepts">Key concepts</h3>
 <p>"Building blocks" involved in this work:</p>
@@ -805,7 +800,7 @@ The performance is evaluated in two settings:</p>
 </ul>
 <h3 id="limitations">Limitations</h3>
 <ul>
-<li>❌ No comparison with <a href="../muzero/">MuZero</a>, which is SotA on multiple Atari games<sup id="fnref:muzero-tweet"><a class="footnote-ref" href="#fn:muzero-tweet">6</a></sup></li>
+<li>❌ No comparison with <a href="../muzero/">MuZero</a>, which is SotA on multiple Atari games<sup id="fnref:muzero-tweet"><a class="footnote-ref" href="#fn:muzero-tweet">8</a></sup></li>
 </ul>
 <h3 id="authors">Authors</h3>
 <ul>
@@ -822,23 +817,29 @@ The performance is evaluated in two settings:</p>
 <div class="footnote">
 <hr />
 <ol>
+<li id="fn:sac">
+<p><a href="https://arxiv.org/abs/1801.01290">Soft Actor-Critic: Off-Policy Maximum Entropy Deep Reinforcement Learning with a Stochastic Actor</a>&#160;<a class="footnote-backref" href="#fnref:sac" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:rainbow">
+<p><a href="https://arxiv.org/abs/1710.02298">Rainbow: Combining Improvements in Deep Reinforcement Learning</a>&#160;<a class="footnote-backref" href="#fnref:rainbow" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
 <li id="fn:bert">
-<p><a href="https://arxiv.org/abs/1810.04805">BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding</a>&#160;<a class="footnote-backref" href="#fnref:bert" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<p><a href="https://arxiv.org/abs/1810.04805">BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding</a>&#160;<a class="footnote-backref" href="#fnref:bert" title="Jump back to footnote 3 in the text">&#8617;</a></p>
 </li>
 <li id="fn:simclr">
-<p><a href="https://arxiv.org/abs/2002.05709">A Simple Framework for Contrastive Learning of Visual Representations</a> (SimCLR)&#160;<a class="footnote-backref" href="#fnref:simclr" title="Jump back to footnote 2 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:simclr" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+<p><a href="https://arxiv.org/abs/2002.05709">A Simple Framework for Contrastive Learning of Visual Representations</a> (SimCLR)&#160;<a class="footnote-backref" href="#fnref:simclr" title="Jump back to footnote 4 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:simclr" title="Jump back to footnote 4 in the text">&#8617;</a></p>
 </li>
 <li id="fn:moco">
-<p><a href="https://arxiv.org/abs/1911.05722">Momentum Contrast for Unsupervised Visual Representation Learning</a> (MoCo)&#160;<a class="footnote-backref" href="#fnref:moco" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+<p><a href="https://arxiv.org/abs/1911.05722">Momentum Contrast for Unsupervised Visual Representation Learning</a> (MoCo)&#160;<a class="footnote-backref" href="#fnref:moco" title="Jump back to footnote 5 in the text">&#8617;</a></p>
 </li>
 <li id="fn:cpc">
-<p><a href="https://arxiv.org/abs/1905.09272">Data-Efficient Image Recognition with Contrastive Predictive Coding</a> (CPC)&#160;<a class="footnote-backref" href="#fnref:cpc" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+<p><a href="https://arxiv.org/abs/1905.09272">Data-Efficient Image Recognition with Contrastive Predictive Coding</a> (CPC)&#160;<a class="footnote-backref" href="#fnref:cpc" title="Jump back to footnote 6 in the text">&#8617;</a></p>
 </li>
 <li id="fn:paper-screenshot">
-<p>excerpts from original paper&#160;<a class="footnote-backref" href="#fnref:paper-screenshot" title="Jump back to footnote 5 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:paper-screenshot" title="Jump back to footnote 5 in the text">&#8617;</a><a class="footnote-backref" href="#fnref3:paper-screenshot" title="Jump back to footnote 5 in the text">&#8617;</a><a class="footnote-backref" href="#fnref4:paper-screenshot" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+<p>excerpts from original paper&#160;<a class="footnote-backref" href="#fnref:paper-screenshot" title="Jump back to footnote 7 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:paper-screenshot" title="Jump back to footnote 7 in the text">&#8617;</a><a class="footnote-backref" href="#fnref3:paper-screenshot" title="Jump back to footnote 7 in the text">&#8617;</a><a class="footnote-backref" href="#fnref4:paper-screenshot" title="Jump back to footnote 7 in the text">&#8617;</a></p>
 </li>
 <li id="fn:muzero-tweet">
-<p><a href="https://twitter.com/gwern/status/1248087160391163906">https://twitter.com/gwern/status/1248087160391163906</a>&#160;<a class="footnote-backref" href="#fnref:muzero-tweet" title="Jump back to footnote 6 in the text">&#8617;</a></p>
+<p><a href="https://twitter.com/gwern/status/1248087160391163906">https://twitter.com/gwern/status/1248087160391163906</a>&#160;<a class="footnote-backref" href="#fnref:muzero-tweet" title="Jump back to footnote 8 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>
