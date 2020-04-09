@@ -1,0 +1,4 @@
+- gradient free
+- value-based
+- policy-based
+- model based vs model free
