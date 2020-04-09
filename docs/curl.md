@@ -34,7 +34,7 @@ The core idea is to compare (contrast!) pairs of augmented samples. We consider 
 - **Positive pairs** consist of two different augmentations of the *same sample* 
 - **Negative pairs** contain augmentations of two *different samples*
 
-For each original sample, we create sets of positive and negative pairs. The contrastive representation is then learned by maximizing the agreement between positive pairs, and minimizing the agreement between negative pairs
+For each original sample, we create sets of positive and negative pairs. The contrastive representation is then learned by maximizing the agreement between positive pairs, and minimizing the agreement between negative pairs.
 
 Contrastive learning has seen dramatic progress in recent years for language and vision. See for example BERT, an application to masked language modeling[^bert], or the SimCLR framework, used to learn visual representations[^simclr]. 
 
@@ -100,8 +100,8 @@ Authors
 Links
 ---
 
-- [Official code repository](https://github.com/MishaLaskin/curl), a PyTorch implementation for SAC
-- [Official project page](https://mishalaskin.github.io/curl/), a good short summary of the paper
+- [Official code repository](https://github.com/MishaLaskin/curl), a PyTorch implementation for SAC on DeepMind Control Suite
+- [Official project page](https://mishalaskin.github.io/curl/), which provides a short summary of the paper
 - [Twitter summary](https://twitter.com/Aravind7694/status/1248049713149906945) from first author
 
 [^sac]: [Soft Actor-Critic: Off-Policy Maximum Entropy Deep Reinforcement Learning with a Stochastic Actor](https://arxiv.org/abs/1801.01290)

@@ -1,4 +1,4 @@
-# **RL Insights**
+# RL Insights
 
 !!! warning
     This site is in its early days, **most pages are still empty!** see below for a list of pages with actual content.
