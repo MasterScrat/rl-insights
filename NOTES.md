@@ -1,3 +1,8 @@
+Deploy to GitHub
+---
+
+mkdocs gh-deploy
+
 Citations
 ---
 
