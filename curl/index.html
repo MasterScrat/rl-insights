@@ -747,7 +747,7 @@
 <p class="admonition-title">Tldr</p>
 <ul>
 <li>CURL improves the sample efficiency when learning from pixels by using contrastive learning, a self-supervised method, as an auxiliary task. </li>
-<li>The contrastive objective works similarly to the SimCLR framework, using random cropping as an augmentation method.</li>
+<li>The CURL contrastive objective works in a similar way as the SimCLR framework, using random cropping as an augmentation method.</li>
 <li>After 100k interactions, CURL outperforms all other methods on DM Control Suite, and shows strong results on Atari games.  </li>
 </ul>
 <p><strong>April 2020 - <a href="https://arxiv.org/abs/2004.04136">arXiv</a> - <a href="https://github.com/MishaLaskin/curl">Code</a></strong></p>
@@ -758,7 +758,7 @@
 <p><img alt="SAC benchmarks" src="../img/curl_sac.png" /></p>
 <p>On the other hand, let's have a look at results using Atari games as a benchmark. There is no notion of "physical" features with the Atari emulator: the only observations the agent can work with are RGB images. The agents now have to be trained for a staggering 200 million frames!<sup id="fnref:rainbow"><a class="footnote-ref" href="#fn:rainbow">2</a></sup> Some distributed approaches even consider numbers up to a billion. </p>
 <p><img alt="Rainbow benchmarks" src="../img/curl_rainbow.png" /></p>
-<p>This low sample-efficiency is clearly a problem. Not only does it mean the experiment turn-around time is excessive, it also means that there can be little hope of bringing such methods to the real world. Can you imagine having to collect billions of real-world interactions?</p>
+<p>This low sample-efficiency is clearly a problem. Not only does it mean the experiment turn-around time is excessive, it also means that there can be little hope of bringing such methods to the real world. Can you imagine having to collect a billion real-world interactions?</p>
 <p>The paper we are considering takes a stab at this problem by bringing recent advances from vision and NLP to reinforcement learning. Contrastive learning takes advantage of data augmentation to learn more efficiently. CURL shows that it can be very useful in the context of RL to learn a good latent representation faster.</p>
 <h2 id="what-is-contrastive-learning">What is contrastive learning?</h2>
 <p>The core idea is to compare (contrast!) pairs of augmented samples. We consider two kinds of such pairs:</p>
@@ -766,7 +766,7 @@
 <li><strong>Positive pairs</strong> consist of two different augmentations of the <em>same sample</em> </li>
 <li><strong>Negative pairs</strong> contain augmentations of two <em>different samples</em></li>
 </ul>
-<p>For each original sample, we create sets of positive and negative pairs. The contrastive representation is then learned by maximizing the agreement between positive pairs, and minimizing the agreement between negative pairs.</p>
+<p>For each original sample, we create both positive and negative pairs. The contrastive representation is then learned by maximizing the agreement between positive pairs, and minimizing the agreement between negative pairs.</p>
 <p>Contrastive learning has seen dramatic progress in recent years for language and vision. See for example BERT, an application to masked language modeling<sup id="fnref:bert"><a class="footnote-ref" href="#fn:bert">3</a></sup>, or the SimCLR framework, used to learn visual representations<sup id="fnref:simclr"><a class="footnote-ref" href="#fn:simclr">4</a></sup>. </p>
 <p>The way contrastive learning is implemented in CURL is mostly influenced by the SimCLR framework<sup id="fnref2:simclr"><a class="footnote-ref" href="#fn:simclr">4</a></sup>, Momentum Contrast (MoCo)<sup id="fnref:moco"><a class="footnote-ref" href="#fn:moco">5</a></sup> and Contrastive Predictive Coding (CPC)<sup id="fnref:cpc"><a class="footnote-ref" href="#fn:cpc">6</a></sup>.</p>
 <h2 id="how-curl-works">How CURL works</h2>
@@ -777,8 +777,8 @@ Since most RL methods use frame-stacking, each observation is effectively a "sta
 <p>The illustration below gives an example of a positive pair: the same observation is augmented in two different ways. The representation will be changed in a way that maximizes their agreement. <sup id="fnref2:paper-screenshot"><a class="footnote-ref" href="#fn:paper-screenshot">7</a></sup></p>
 <p><img alt="cropping augmentation" src="../img/curl_augment.png" /></p>
 <h2 id="evaluation">Evaluation</h2>
-<p>Using a contrastive objective as an auxiliary task significantly improves the performance of the RL algorithm. 
-The performance is evaluated in two settings:</p>
+<p>Using a contrastive objective as an auxiliary task appears to significantly improve the performance of the RL algorithm. 
+CURL's performance is evaluated in two settings:</p>
 <ul>
 <li>with <a href="../sac/">SAC</a> on DeepMind Control Suite (continuous control)</li>
 <li>with data-efficient <a href="../rainbow/">Rainbow DQN</a> on Atari games (discrete control). </li>
