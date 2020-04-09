@@ -761,18 +761,18 @@
 <p>This low sample-efficiency is clearly a problem. Not only does it mean the experiment turn-around time is excessive, it also means that there can be little hope of bringing such methods to real-world problems. Can you imagine having to collect billions of real-world interactions?</p>
 <p>The paper we are considering takes a stab at this problem by bringing recent advances from vision and NLP to reinforcement learning. Contrastive learning takes advantage of data augmentation to learn more efficiently. CURL shows that it can be very useful in the context of RL to learn a good latent representation faster.</p>
 <h3 id="what-is-contrastive-learning">What is contrastive learning?</h3>
-<p>The core idea is to compare (contrast!) pairs of augmented samples. There are two kinds of such pairs:</p>
+<p>The core idea is to compare (contrast!) pairs of augmented samples. We consider two kinds of such pairs:</p>
 <ul>
 <li><strong>Positive pairs</strong> consist of two different augmentations of the <em>same sample</em> </li>
 <li><strong>Negative pairs</strong> contain augmentations of two <em>different samples</em></li>
 </ul>
-<p>The contrastive representation is then learned by maximizing the agreement between positive pairs, and minimizing the agreement between negative pairs</p>
-<p>Contrastive learning has seen dramatic progress in recent years for language and vision - see for example BERT which is an application to masked language modeling<sup id="fnref:bert"><a class="footnote-ref" href="#fn:bert">3</a></sup>, or the SimCLR framework used to learn visual representations<sup id="fnref:simclr"><a class="footnote-ref" href="#fn:simclr">4</a></sup>. </p>
+<p>For each sample, we create a set of positive and negative pairs. The contrastive representation is then learned by maximizing the agreement between positive pairs, and minimizing the agreement between negative pairs</p>
+<p>Contrastive learning has seen dramatic progress in recent years for language and vision. See for example BERT, an application to masked language modeling<sup id="fnref:bert"><a class="footnote-ref" href="#fn:bert">3</a></sup>, or the SimCLR framework, used to learn visual representations<sup id="fnref:simclr"><a class="footnote-ref" href="#fn:simclr">4</a></sup>. </p>
 <p>The way contrastive learning is implemented in CURL is mostly influenced by the SimCLR framework<sup id="fnref2:simclr"><a class="footnote-ref" href="#fn:simclr">4</a></sup>, Momentum Contrast (MoCo)<sup id="fnref:moco"><a class="footnote-ref" href="#fn:moco">5</a></sup> and Contrastive Predictive Coding (CPC)<sup id="fnref:cpc"><a class="footnote-ref" href="#fn:cpc">6</a></sup>.</p>
 <h3 id="how-curl-works">How CURL works</h3>
 <p>With CURL, the same latent representation is used for both the RL algorithm and the contrastive learning, as illustrated below: <sup id="fnref:paper-screenshot"><a class="footnote-ref" href="#fn:paper-screenshot">7</a></sup></p>
 <p><img alt="CURL diagram" src="../img/curl_diagram.png" /></p>
-<p>CURL exclusively uses random crops to augment the observations. 
+<p>CURL uses random crops to augment the observations. 
 Since most RL methods use frame-stacking, each observation is effectively a "stack" of sequential images. CURL preserves their temporal structure by applying the same augmentation to each frame in the stack. </p>
 <p>The illustration below gives an example of a positive pair: the same observation is augmented in two different ways. The representation will be changed in a way that maximizes their agreement. <sup id="fnref2:paper-screenshot"><a class="footnote-ref" href="#fn:paper-screenshot">7</a></sup></p>
 <p><img alt="cropping augmentation" src="../img/curl_augment.png" /></p>
@@ -783,11 +783,11 @@ The performance is evaluated in two settings:</p>
 <li>with <a href="../sac/">SAC</a> on DeepMind Control Suite (continuous control)</li>
 <li>with data-efficient <a href="../rainbow/">Rainbow DQN</a> on Atari games (discrete control). </li>
 </ul>
-<p>In both cases, the performance is evaluated after 100k iterations, as the goal is to evaluate sample efficiency rather than asymptotic performance. </p>
+<p>In both cases, the performance is evaluated after 100k interactions, as the goal is to evaluate sample efficiency rather than asymptotic performance. </p>
 <p>Results are remarkable on DeepMind Control Suite : <sup id="fnref3:paper-screenshot"><a class="footnote-ref" href="#fn:paper-screenshot">7</a></sup>
 <img alt="dmcs" src="../img/curl_dmc.png" />
 (The last column, <em>State SAC</em>, uses physical states and is used as an "oracle" upper-bound.)</p>
-<p>Results are very good on Atari games: <sup id="fnref4:paper-screenshot"><a class="footnote-ref" href="#fn:paper-screenshot">7</a></sup>
+<p>Results are very good on Atari games. This is again after 100k interactions: <sup id="fnref4:paper-screenshot"><a class="footnote-ref" href="#fn:paper-screenshot">7</a></sup>
 <img alt="atari" src="../img/curl_atari.png" /></p>
 <h3 id="key-concepts">Key concepts</h3>
 <p>"Building blocks" involved in this work:</p>
