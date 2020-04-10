@@ -3,13 +3,13 @@
 
 !!! tldr
     - CURL improves the sample efficiency when learning from pixels by using contrastive learning, a self-supervised method, as an auxiliary task. 
-    - The CURL contrastive objective works in a similar way as the SimCLR framework, using random cropping as an augmentation method.
+    - The CURL contrastive objective works in a similar way as the SimCLR framework, using simple random cropping as an augmentation method.
     - After 100k interactions, CURL outperforms all other methods on DM Control Suite, and shows strong results on Atari games.  
 
     **April 2020 - [arXiv](https://arxiv.org/abs/2004.04136) - [Code](https://github.com/MishaLaskin/curl)**
     
     
-What is this about?
+Learning from pixels
 ---
 
 In reinforcement learning, solving a task *from pixels* is much harder than solving an equivalent task using "physical" features such as coordinates and angles. This makes sense: you can consider an image as a high-dimensional vector containing hundreds of features, which don't have any clear connection with the goal of the environment!
@@ -90,19 +90,19 @@ Limitations
 
 - ❌ No comparison with [MuZero](muzero.md), which is SotA on multiple Atari games[^muzero-tweet]
 
-Authors
----
-
-- Aravind Srinivas [Twitter](https://twitter.com/Aravind7694)/[Scholar](https://scholar.google.com/citations?user=GhrKC1gAAAAJ)/[Academic](https://people.eecs.berkeley.edu/~aravind/)
-- Michael Laskin [Twitter](https://twitter.com/MishaLaskin)/[Scholar](https://scholar.google.com/citations?user=DOGDnwsAAAAJ)/[Academic](https://mishalaskin.github.io/)
-- Pieter Abbeel  [Twitter](https://twitter.com/pabbeel)/[Scholar](https://scholar.google.com/citations?user=vtwH6GkAAAAJ)/[Academic](https://people.eecs.berkeley.edu/~pabbeel/)
-
 Links
 ---
 
 - [Official code repository](https://github.com/MishaLaskin/curl), a PyTorch implementation for SAC on DeepMind Control Suite
 - [Official project page](https://mishalaskin.github.io/curl/), which provides a short summary of the paper
 - [Twitter summary](https://twitter.com/Aravind7694/status/1248049713149906945) from first author
+
+Authors
+---
+
+- Aravind Srinivas [Twitter](https://twitter.com/Aravind7694)/[Scholar](https://scholar.google.com/citations?user=GhrKC1gAAAAJ)/[Academic](https://people.eecs.berkeley.edu/~aravind/)
+- Michael Laskin [Twitter](https://twitter.com/MishaLaskin)/[Scholar](https://scholar.google.com/citations?user=DOGDnwsAAAAJ)/[Academic](https://mishalaskin.github.io/)
+- Pieter Abbeel  [Twitter](https://twitter.com/pabbeel)/[Scholar](https://scholar.google.com/citations?user=vtwH6GkAAAAJ)/[Academic](https://people.eecs.berkeley.edu/~pabbeel/)
 
 [^sac]: [Soft Actor-Critic: Off-Policy Maximum Entropy Deep Reinforcement Learning with a Stochastic Actor](https://arxiv.org/abs/1801.01290)
 [^rainbow]: [Rainbow: Combining Improvements in Deep Reinforcement Learning](https://arxiv.org/abs/1710.02298)
