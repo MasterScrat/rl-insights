@@ -9,27 +9,6 @@ nav:
   - Papers:
       - curl.md
       - a3c.md
-      - acer.md
-      - ppo.md
-      - rainbow.md
-  - Concepts:
-      - policy-based-methods.md
-      - policy-gradient-methods.md
-      - value-based-methods.md
-      - actor-critic.md
-      - cem.md
-      - distributed-training.md
-      - experience-replay.md
-      - gae.md
-      - rl-approaches.md
-      - sample-efficiency.md
-  - FAQ:
-      - what-is-rl.md
-      - why-dnq-not-converging.md
-      - methods-comparison.md
-      - tips-and-tricks.md
-      - best-resources.md
-      - foundational-papers.md
 
 theme:
   name: 'material'

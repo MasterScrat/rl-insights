@@ -1,3 +1,4 @@
+/* Flatter look */
 .md-header[data-md-state=shadow] {
     box-shadow: none;
 }
@@ -7,16 +8,23 @@
     border-radius: 0;
 }
 
-.md-typeset h1 {
-    color: rgba(0, 0, 0, .87);
-}
-
 @media only screen and (min-width: 60em) {
     [data-md-toggle=search]:checked ~ .md-header .md-search__output {
         box-shadow: none;
     }
 }
 
+/* More contrast for main titles */
+.md-typeset h1 {
+    color: rgba(0, 0, 0, .87);
+}
+
+/* Larger text in admonition boxes */
 .md-typeset .admonition, .md-typeset details {
     font-size: .74rem;
+}
+
+/* Hide edit icon */
+body > div > main > div > div.md-content > article > a {
+    display: none;
 }
