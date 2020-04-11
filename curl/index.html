@@ -491,7 +491,7 @@
                   <a href="https://github.com/MasterScrat/rl-insights/edit/master/docs/curl.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="curl-contrastive-unsupervised-representations-for-reinforcement-learning">CURL: Contrastive Unsupervised Representations for Reinforcement Learning</h1>
+                <h1 id="curl-contrastive-unsupervised-representations-for-reinforcement-learning">CURL: Contrastive Unsupervised Representations for Reinforcement Learning<a class="headerlink" href="#curl-contrastive-unsupervised-representations-for-reinforcement-learning" title="Permanent link">&para;</a></h1>
 <div class="admonition tldr">
 <p class="admonition-title">Tldr</p>
 <ul>
@@ -501,7 +501,7 @@
 </ul>
 <p><strong>April 2020 - <a href="https://arxiv.org/abs/2004.04136">arXiv</a> - <a href="https://github.com/MishaLaskin/curl">Code</a></strong></p>
 </div>
-<h2 id="learning-from-pixels">Learning from pixels</h2>
+<h2 id="learning-from-pixels">Learning from pixels<a class="headerlink" href="#learning-from-pixels" title="Permanent link">&para;</a></h2>
 <p>In reinforcement learning, solving a task <em>from pixels</em> is much harder than solving an equivalent task using "physical" features such as coordinates and angles. This makes sense: you can consider an image as a high-dimensional vector containing hundreds of features, which don't have any clear connection with the goal of the environment!</p>
 <p>As a result, you generally need a lot more interactions between an agent and its environment in order to learn a good policy from pixels. For example, the figure below shows the results of multiple recent RL methods on the DeepMind Control Suite, learning from physical features. Take a look at the x-axis: depending on the complexity of the task, the agents are trained from 1 to 10 million interactions: <sup id="fnref:sac"><a class="footnote-ref" href="#fn:sac">1</a></sup> </p>
 <p><img alt="SAC benchmarks" src="../img/curl_sac.png" /></p>
@@ -509,7 +509,7 @@
 <p><img alt="Rainbow benchmarks" src="../img/curl_rainbow.png" /></p>
 <p>This low sample-efficiency is clearly a problem. Not only does it mean the experiment turn-around time is excessive, it also means that there can be little hope of bringing such methods to the real world. Can you imagine having to collect a billion real-world interactions?</p>
 <p>The paper we are considering takes a stab at this problem by bringing recent advances from vision and NLP to reinforcement learning. Contrastive learning takes advantage of data augmentation to learn more efficiently. CURL shows that it can be very useful in the context of RL to learn a good latent representation faster.</p>
-<h2 id="what-is-contrastive-learning">What is contrastive learning?</h2>
+<h2 id="what-is-contrastive-learning">What is contrastive learning?<a class="headerlink" href="#what-is-contrastive-learning" title="Permanent link">&para;</a></h2>
 <p>The core idea is to compare (contrast!) pairs of augmented samples. We consider two kinds of such pairs:</p>
 <ul>
 <li><strong>Positive pairs</strong> consist of two different augmentations of the <em>same sample</em> </li>
@@ -518,14 +518,14 @@
 <p>For each original sample, we create both positive and negative pairs. The contrastive representation is then learned by maximizing the agreement between positive pairs, and minimizing the agreement between negative pairs.</p>
 <p>Contrastive learning has seen dramatic progress in recent years for language and vision. See for example BERT, an application to masked language modeling<sup id="fnref:bert"><a class="footnote-ref" href="#fn:bert">3</a></sup>, or the SimCLR framework, used to learn visual representations<sup id="fnref:simclr"><a class="footnote-ref" href="#fn:simclr">4</a></sup>. </p>
 <p>The way contrastive learning is implemented in CURL is mostly influenced by the SimCLR framework<sup id="fnref2:simclr"><a class="footnote-ref" href="#fn:simclr">4</a></sup>, Momentum Contrast (MoCo)<sup id="fnref:moco"><a class="footnote-ref" href="#fn:moco">5</a></sup> and Contrastive Predictive Coding (CPC)<sup id="fnref:cpc"><a class="footnote-ref" href="#fn:cpc">6</a></sup>.</p>
-<h2 id="how-curl-works">How CURL works</h2>
+<h2 id="how-curl-works">How CURL works<a class="headerlink" href="#how-curl-works" title="Permanent link">&para;</a></h2>
 <p>With CURL, the same latent representation is used for both the RL algorithm and the contrastive learning, as illustrated below: <sup id="fnref:paper-screenshot"><a class="footnote-ref" href="#fn:paper-screenshot">7</a></sup></p>
 <p><img alt="CURL diagram" src="../img/curl_diagram.png" /></p>
 <p>CURL uses random crops to augment the observations. 
 Since most RL methods use frame-stacking, each observation is effectively a "stack" of sequential images. CURL preserves their temporal structure by applying the same augmentation to each frame in the stack. </p>
 <p>The illustration below gives an example of a positive pair: the same observation is augmented in two different ways. The representation will be changed in a way that maximizes their agreement. <sup id="fnref2:paper-screenshot"><a class="footnote-ref" href="#fn:paper-screenshot">7</a></sup></p>
 <p><img alt="cropping augmentation" src="../img/curl_augment.png" /></p>
-<h2 id="evaluation">Evaluation</h2>
+<h2 id="evaluation">Evaluation<a class="headerlink" href="#evaluation" title="Permanent link">&para;</a></h2>
 <p>Using a contrastive objective as an auxiliary task appears to significantly improve the performance of the RL algorithm. 
 CURL's performance is evaluated in two settings:</p>
 <ul>
@@ -539,7 +539,7 @@ CURL's performance is evaluated in two settings:</p>
 <p>Results are very good on Atari games. This is again after 100k interactions: <sup id="fnref4:paper-screenshot"><a class="footnote-ref" href="#fn:paper-screenshot">7</a></sup>
 <img alt="atari" src="../img/curl_atari.png" /></p>
 <p>How can this difference in performance be explained? One idea explored in the appendix is that in some environments, there is simply not enough information to fully recover the state when looking only at the pixel data: the problem then becomes <strong>partially observable</strong> and therefore much harder.  </p>
-<h2 id="key-concepts">Key concepts</h2>
+<h2 id="key-concepts">Key concepts<a class="headerlink" href="#key-concepts" title="Permanent link">&para;</a></h2>
 <p>"Building blocks" involved in this work:</p>
 <ul>
 <li>Focuses on <a href="../sample-efficiency/">sample efficiency</a></li>
@@ -548,17 +548,17 @@ CURL's performance is evaluated in two settings:</p>
 <li>Benchmarked on <a href="../dm-control-suite/">DeepMind Control Suite</a></li>
 <li>Benchmarked on <a href="../atari/">Atari games</a></li>
 </ul>
-<h2 id="limitations">Limitations</h2>
+<h2 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h2>
 <ul>
 <li>❌ No comparison with <a href="../muzero/">MuZero</a>, which is SotA on multiple Atari games<sup id="fnref:muzero-tweet"><a class="footnote-ref" href="#fn:muzero-tweet">8</a></sup></li>
 </ul>
-<h2 id="links">Links</h2>
+<h2 id="links">Links<a class="headerlink" href="#links" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="https://github.com/MishaLaskin/curl">Official code repository</a>, a PyTorch implementation for SAC on DeepMind Control Suite</li>
 <li><a href="https://mishalaskin.github.io/curl/">Official project page</a>, which provides a short summary of the paper</li>
 <li><a href="https://twitter.com/Aravind7694/status/1248049713149906945">Twitter summary</a> from first author</li>
 </ul>
-<h2 id="authors">Authors</h2>
+<h2 id="authors">Authors<a class="headerlink" href="#authors" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Aravind Srinivas <a href="https://twitter.com/Aravind7694">Twitter</a>/<a href="https://scholar.google.com/citations?user=GhrKC1gAAAAJ">Scholar</a>/<a href="https://people.eecs.berkeley.edu/~aravind/">Academic</a></li>
 <li>Michael Laskin <a href="https://twitter.com/MishaLaskin">Twitter</a>/<a href="https://scholar.google.com/citations?user=DOGDnwsAAAAJ">Scholar</a>/<a href="https://mishalaskin.github.io/">Academic</a></li>
@@ -596,6 +596,16 @@ CURL's performance is evaluated in two settings:</p>
                 
                   
                 
+                
+                  
+                  <hr>
+                  <div class="md-source-date">
+                    <small>
+                      
+                        Last update: April 10, 2020
+                      
+                    </small>
+                  </div>
                 
               
               

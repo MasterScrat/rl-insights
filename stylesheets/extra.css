@@ -8,12 +8,6 @@
     border-radius: 0;
 }
 
-@media only screen and (min-width: 60em) {
-    [data-md-toggle=search]:checked ~ .md-header .md-search__output {
-        box-shadow: none;
-    }
-}
-
 /* More contrast for main titles */
 .md-typeset h1 {
     color: rgba(0, 0, 0, .87);
@@ -26,5 +20,10 @@
 
 /* Hide edit icon */
 body > div > main > div > div.md-content > article > a {
+    display: none;
+}
+
+/* Hide extra horizontal line between footnotes and last update date */
+body > div > main > div > div.md-content > article > hr {
     display: none;
 }

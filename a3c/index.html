@@ -359,8 +359,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#related-links" class="md-nav__link">
-    Related Links
+  <a href="#links" class="md-nav__link">
+    Links
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#authors" class="md-nav__link">
+    Authors
   </a>
   
 </li>
@@ -436,8 +443,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#related-links" class="md-nav__link">
-    Related Links
+  <a href="#links" class="md-nav__link">
+    Links
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#authors" class="md-nav__link">
+    Authors
   </a>
   
 </li>
@@ -461,7 +475,7 @@
                   <a href="https://github.com/MasterScrat/rl-insights/edit/master/docs/a3c.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="asynchronous-methods-for-deep-reinforcement-learning">Asynchronous Methods for Deep Reinforcement Learning</h1>
+                <h1 id="asynchronous-methods-for-deep-reinforcement-learning">Asynchronous Methods for Deep Reinforcement Learning<a class="headerlink" href="#asynchronous-methods-for-deep-reinforcement-learning" title="Permanent link">&para;</a></h1>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Under construction! This page is still incomplete.</p>
@@ -476,7 +490,7 @@
 </ul>
 <p><strong>Published February 2016 - <a href="https://arxiv.org/abs/1602.01783">arXiv</a></strong></p>
 </div>
-<h2 id="learning-faster">Learning faster</h2>
+<h2 id="learning-faster">Learning faster<a class="headerlink" href="#learning-faster" title="Permanent link">&para;</a></h2>
 <p>Let's start with some context. When this paper comes out in February 2016, DQN had already shown the promise of "deep" reinforcement learning, with extensions such as <a href="double-dqn.md">Double DQN</a> and  <a href="per.md">Prioritized Experience Replay</a> already published - but the Rainbow agent that would combine them all was still a year away. On the policy gradient front, <a href="trpo.md">TPRO</a> was out, but not yet <a href="../ppo/">PPO</a>.</p>
 <p>~ The concerns of learning in a stable and efficient way were even more at the forefront than right now.</p>
 <p>The replay buffer is an efficient solution against observation non-stationarity. 
@@ -489,33 +503,49 @@ But:
 - sample efficiency
 - time efficiency</p>
 <p>This method, as presented, has very low sample efficiency (each observation is used only once, or a few times due to n-step learning) but can be scaled up easily. Note that for off-policy method, it could very well be combined with a replay buffer!</p>
-<p>This approach relies exclusively on CPU. </p>
-<h3 id="summary">Summary</h3>
+<p>A stated goal of this approach is to rely only on CPU. This allows Howgwild-style updates. However, a different method called A2C, which does leverage GPUs, is preferred today.</p>
+<p>The asynchronous RL framework </p>
+<h3 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h3>
 <p>This paper investigates a new parallel training method which uses multiple CPU cores on the same machine, rather than relying on GPUs. Both value-based and policy-based methods are considered. </p>
 <p>The major result is the performance of this training scheme using an <a href="../actor-critic/">actor-critic method</a>.</p>
 <p>This training scheme also shows promising results for value-based methods. However, these methods being off-policy, they can be significantly improved with the use of a replay buffer. </p>
 <p>The core idea is to use multiple asynchronous "actor-learners" running in different threads. Each actor-learner performs a number of learning steps, then perform an asynchronous update of the global parameters using accumulated gradients. </p>
 <p>Since this method is designed to train networks using a CPU, asynchronous updates made a lot of sense as it enabled <a href="hogwild.md">Hogwild syle</a> updates. However, it appeared later on that this was not optimal when using a GPU. For this reason, this method is commonly used today in a synchronous way in which the updates from all the actor-learners are batched to make better use of the GPU. This non-asynchronous version is simply called <strong>A2C</strong> (Advantage Actor Critic) [^openai-acktr-a2c].</p>
-<h2 id="in-hindsight">In hindsight</h2>
+<h2 id="in-hindsight">In hindsight<a class="headerlink" href="#in-hindsight" title="Permanent link">&para;</a></h2>
 <ul>
 <li>✅ Using multiple environments in parallel is a good way to decorrelate the agent's data</li>
 <li>❌ Asynchronous updates are not a good match for GPU training</li>
 <li>❌ Using exclusively on-policy data is very bad for sample efficiency</li>
 </ul>
-<h2 id="key-concepts">Key concepts</h2>
+<h2 id="key-concepts">Key concepts<a class="headerlink" href="#key-concepts" title="Permanent link">&para;</a></h2>
 <p>"Building blocks" involved in this work:</p>
 <ul>
-<li>Builds on <a href="dqn.md">DQN</a> and <a href="../actor-critic/">Actor-Critic</a> </li>
+<li>Builds on <a href="gorila.md">Gorila</a> distributed training system</li>
+<li>Builds on <a href="dqn.md">DQN</a> and <a href="../actor-critic/">Actor-Critic</a> methods</li>
 <li>Introduces a single-machine <a href="parallel-training.md">parallel training</a> method</li>
 <li>Uses <a href="entropy-regularization.md">entropy regularization</a></li>
-<li>Uses an LSTM <a href="rnn.md">Recurrent Neural Network</a></li>
+<li>Uses an LSTM <a href="rnn.md">Recurrent Neural Network</a> layer</li>
 <li>Uses <a href="n-step-return.md">multi-step return</a> with the forward view</li>
 <li>Uses <a href="shared-layers.md">shared layers</a> between policy and value functions</li>
 <li>Benchmarked on <a href="../atari/">Atari games</a></li>
 </ul>
-<h2 id="related-links">Related Links</h2>
+<h2 id="links">Links<a class="headerlink" href="#links" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="https://danieltakeshi.github.io/2018/06/28/a2c-a3c/">Actor-Critic Methods: A3C and A2C</a> from Daniel Seita</li>
+</ul>
+<h2 id="authors">Authors<a class="headerlink" href="#authors" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Volodymyr Mnih <a href="https://twitter.com/vladmnih">Twitter</a>/<a href="https://scholar.google.com/citations?user=rLdfJ1gAAAAJ">Scholar</a>/<a href="https://www.cs.toronto.edu/~vmnih/">Academic</a></li>
+</ul>
+<p>TODO!</p>
+<ul>
+<li>Adrià Puigdomènech Badia <a href="https://twitter.com/vladmnih">Twitter</a>/<a href="https://scholar.google.com/citations?user=rLdfJ1gAAAAJ">Scholar</a>/<a href="https://www.cs.toronto.edu/~vmnih/">Academic</a></li>
+<li>Mehdi Mirza <a href="https://twitter.com/vladmnih">Twitter</a>/<a href="https://scholar.google.com/citations?user=rLdfJ1gAAAAJ">Scholar</a>/<a href="https://www.cs.toronto.edu/~vmnih/">Academic</a></li>
+<li>Alex Graves <a href="https://twitter.com/vladmnih">Twitter</a>/<a href="https://scholar.google.com/citations?user=rLdfJ1gAAAAJ">Scholar</a>/<a href="https://www.cs.toronto.edu/~vmnih/">Academic</a></li>
+<li>Tim Harley <a href="https://twitter.com/vladmnih">Twitter</a>/<a href="https://scholar.google.com/citations?user=rLdfJ1gAAAAJ">Scholar</a>/<a href="https://www.cs.toronto.edu/~vmnih/">Academic</a></li>
+<li>Timothy P. Lillicrap <a href="https://twitter.com/vladmnih">Twitter</a>/<a href="https://scholar.google.com/citations?user=rLdfJ1gAAAAJ">Scholar</a>/<a href="https://www.cs.toronto.edu/~vmnih/">Academic</a></li>
+<li>David Silver <a href="https://twitter.com/vladmnih">Twitter</a>/<a href="https://scholar.google.com/citations?user=rLdfJ1gAAAAJ">Scholar</a>/<a href="https://www.cs.toronto.edu/~vmnih/">Academic</a></li>
+<li>Koray Kavukcuoglu <a href="https://twitter.com/vladmnih">Twitter</a>/<a href="https://scholar.google.com/citations?user=rLdfJ1gAAAAJ">Scholar</a>/<a href="https://www.cs.toronto.edu/~vmnih/">Academic</a></li>
 </ul>
 <div class="footnote">
 <hr />
@@ -528,6 +558,16 @@ But:
                 
                   
                 
+                
+                  
+                  <hr>
+                  <div class="md-source-date">
+                    <small>
+                      
+                        Last update: April 11, 2020
+                      
+                    </small>
+                  </div>
                 
               
               
