@@ -8,5 +8,15 @@
 }
 
 .md-typeset h1 {
-    color: rgba(0,0,0,.87);
+    color: rgba(0, 0, 0, .87);
+}
+
+@media only screen and (min-width: 60em) {
+    [data-md-toggle=search]:checked ~ .md-header .md-search__output {
+        box-shadow: none;
+    }
+}
+
+.md-typeset .admonition, .md-typeset details {
+    font-size: .74rem;
 }
