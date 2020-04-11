@@ -16,9 +16,15 @@ theme:
     primary: 'indigo'
     accent: 'orange'
 
+plugins:
+  - search
+  - git-revision-date-localized
+
 markdown_extensions:
   - admonition
   - footnotes
+  - toc:
+      permalink: true
 
 extra_css:
   - 'stylesheets/extra.css'
