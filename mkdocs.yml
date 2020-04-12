@@ -1,8 +1,10 @@
 site_name: RL Insights
-repo_url: https://github.com/MasterScrat/rl-insights
 site_author: Florian LAURENT
-site_description: Reinforcement learning resources
+site_description: A reinforcement learning knowledge base
 copyright: 'Copyright &copy; 2020 Florian Laurent'
+
+repo_url: https://github.com/MasterScrat/rl-insights
+edit_uri: ""
 
 nav:
   - Home: index.md
@@ -19,6 +21,8 @@ theme:
 plugins:
   - search
   - git-revision-date-localized
+  - minify:
+      minify_html: true
 
 markdown_extensions:
   - admonition

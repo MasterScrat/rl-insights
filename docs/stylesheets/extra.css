@@ -18,11 +18,6 @@
     font-size: .74rem;
 }
 
-/* Hide edit icon */
-body > div > main > div > div.md-content > article > a {
-    display: none;
-}
-
 /* Hide extra horizontal line between footnotes and last update date */
 body > div > main > div > div.md-content > article > hr {
     display: none;
