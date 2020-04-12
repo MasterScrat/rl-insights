@@ -4,7 +4,7 @@
     This site is in its early days, **most pages are still empty!** Pages with actual content so far:
     
     - [CURL: Contrastive Unsupervised Representations for Reinforcement Learning](curl.md)
-    - [Asynchronous Methods for Deep Reinforcement Learning](a3c.md)
+    - [Asynchronous Methods for Deep Reinforcement Learning](a3c.md) (A3C)
 
 Site structure
 ---

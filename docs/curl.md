@@ -1,14 +1,12 @@
 # CURL: Contrastive Unsupervised Representations for Reinforcement Learning
 
-
 !!! tldr
-    - CURL improves the sample efficiency when learning from pixels by using contrastive learning, a self-supervised method, as an auxiliary task. 
-    - The CURL contrastive objective works in a similar way as the SimCLR framework, using simple random cropping as an augmentation method.
-    - After 100k interactions, CURL outperforms all other methods on DM Control Suite, and shows strong results on Atari games.  
+    - Improves the sample efficiency when learning from pixels by using contrastive learning, a self-supervised method, as an auxiliary task. 
+    - The contrastive objective works in a similar way as in SimCLR, using random cropping as an augmentation method.
+    - After 100k interactions, outperforms all other methods on DM Control Suite, and shows strong results on Atari.  
 
     **April 2020 - [arXiv](https://arxiv.org/abs/2004.04136) - [Code](https://github.com/MishaLaskin/curl)**
-    
-    
+
 Learning from pixels
 ---
 
@@ -43,14 +41,14 @@ The way contrastive learning is implemented in CURL is mostly influenced by the 
 How CURL works
 ---
 
-With CURL, the same latent representation is used for both the RL algorithm and the contrastive learning, as illustrated below: [^paper-screenshot]
+With CURL, the same latent representation is used for both the RL algorithm and the contrastive learning, as illustrated below: [^original]
 
 ![CURL diagram](img/curl_diagram.png)
 
 CURL uses random crops to augment the observations. 
 Since most RL methods use frame-stacking, each observation is effectively a "stack" of sequential images. CURL preserves their temporal structure by applying the same augmentation to each frame in the stack. 
 
-The illustration below gives an example of a positive pair: the same observation is augmented in two different ways. The representation will be changed in a way that maximizes their agreement. [^paper-screenshot]
+The illustration below gives an example of a positive pair: the same observation is augmented in two different ways. The representation will be changed in a way that maximizes their agreement. [^original]
 
 ![cropping augmentation](img/curl_augment.png)
 
@@ -65,11 +63,11 @@ CURL's performance is evaluated in two settings:
 
 In both cases, the performance is evaluated after 100k interactions, as the goal is to evaluate sample efficiency rather than asymptotic performance. 
 
-Results are remarkable on DeepMind Control Suite : [^paper-screenshot]
+Results are remarkable on DeepMind Control Suite : [^original]
 ![dmcs](img/curl_dmc.png)
 (The last column, *State SAC*, uses physical states and is used as an "oracle" upper-bound.)
 
-Results are very good on Atari games. This is again after 100k interactions: [^paper-screenshot]
+Results are very good on Atari games. This is again after 100k interactions: [^original]
 ![atari](img/curl_atari.png)
 
 How can this difference in performance be explained? One idea explored in the appendix is that in some environments, there is simply not enough information to fully recover the state when looking only at the pixel data: the problem then becomes **partially observable** and therefore much harder.  
@@ -110,5 +108,5 @@ Authors
 [^simclr]: [A Simple Framework for Contrastive Learning of Visual Representations](https://arxiv.org/abs/2002.05709) (SimCLR)
 [^moco]: [Momentum Contrast for Unsupervised Visual Representation Learning](https://arxiv.org/abs/1911.05722) (MoCo)
 [^cpc]: [Data-Efficient Image Recognition with Contrastive Predictive Coding](https://arxiv.org/abs/1905.09272) (CPC)
-[^paper-screenshot]: excerpts from original paper
+[^original]: excerpts from original paper
 [^muzero-tweet]: [https://twitter.com/gwern/status/1248087160391163906](https://twitter.com/gwern/status/1248087160391163906)
