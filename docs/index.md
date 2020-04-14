@@ -5,14 +5,14 @@
     
     - [CURL: Contrastive Unsupervised Representations for Reinforcement Learning](curl.md)
     - [Asynchronous Methods for Deep Reinforcement Learning](a3c.md) (A3C)
+    - [Notebook Pitfalls](notebook-pitfalls.md)
 
 Site structure
 ---
 
 - **Papers**: provides summaries, key concepts, and links to blog posts and notebooks.
-
 - **Concepts**: cross-references RL "building blocks" across papers.
-
+- **Notebooks**: runnable code samples to illustrate concepts.
 - **FAQ**: curated answers to common questions.
 
 New to RL?

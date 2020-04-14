@@ -18,7 +18,7 @@ Scaling up the training process brings two advantages:
 - It enables shorter training times, as it allows us to throw more compute at the problem
 - It helps stabilize training, by decorrelating the experiences observed by the agent
 
-Decorreleting updates
+Decorreleting experiences
 ---
 
 A common problem in reinforcement learning is the correlation and non-stationarity of successive experiences. When using off-policy methods such as [DQN](dqn.md), it is possible to use a [replay buffer](experience-replay.md) to store experiences then sample them randomly. This is more complicated when using on-policy algorithms such as [policy gradient methods](policy-gradient-methods.md), as they can't reuse past experiences.
@@ -99,9 +99,9 @@ However, a different method called A2C, which does leverage GPUs, is preferred t
 In hindsight
 ---
 
-- ✅ Executing multiple agents in parallel is a good way to decorrelate observations
-- ❌ Asynchronous updates are not a good match for GPU training: see [A2C](#from-a3c-to-a2c)
-- ❌ Using exclusively on-policy data is bad for sample efficiency: see [ACER](acer.md), [IMPALA](impala.md)
+- :white_check_mark: Executing multiple agents in parallel is a good way to decorrelate observations
+- :x: Asynchronous updates are not a good match for GPU training: see [A2C](#from-a3c-to-a2c)
+- :x: Using exclusively on-policy data is bad for sample efficiency: see [ACER](acer.md), [IMPALA](impala.md)
 
 
 Key concepts

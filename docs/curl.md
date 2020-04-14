@@ -86,7 +86,7 @@ Key concepts
 Limitations
 ---
 
-- ❌ No comparison with [MuZero](muzero.md), which is SotA on multiple Atari games[^muzero-tweet]
+- :x: No comparison with [MuZero](muzero.md), which is SotA on multiple Atari games[^muzero-tweet]
 
 Links
 ---
