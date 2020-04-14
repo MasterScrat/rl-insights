@@ -1,7 +1,7 @@
 # Asynchronous Methods for Deep Reinforcement Learning
 
 !!! tldr
-    - Introduces a training framework that uses multiple CPU cores to speed up training on a single machine.
+    - Introduces an RL framework that uses multiple CPU cores to speed up training on a single machine.
     - The main result is A3C, a parallel actor-critic method that uses shared layers between actor and critic, n-step returns and entropy regularization.
     - Parallel training for value-based methods is also investigated, but results are less convincing.
     - A synchronous version called A2C, geared towards GPUs, is generally preferred nowadays.[^a2c]
@@ -32,7 +32,10 @@ For off-policy methods, this is a memory vs compute trade-off:
 - Replay buffers are memory-intensive, but use little computing power
 - Parallel agents are CPU-intensive, but are not as memory-hungry as replay buffers
 
-For on-policy methods, there is no downside as they can't learn from previous experiences! (Following this publication other methods came up to address this limitation such as [ACER](acer.md), [IMPALA](impala.md) etc.)
+Note that it would be possible to combine a replay buffer - either central or separate per worker - with parallel agents. 
+Going in this direction leads us to architectures such as Gorila or Ape-X.
+
+For on-policy methods, there is no downside to using parallel agents, as they can't learn from previous experiences! (Following this publication other methods came up to address this limitation such as [ACER](acer.md), [IMPALA](impala.md) and others.)
 
 Implementation details
 ---
@@ -41,7 +44,7 @@ A stated goal of this framework is to leverage multi-cores CPUs without relying 
 
 > Our parallel reinforcement learning paradigm also offers practical benefits. Whereas previous approaches to deep reinforcement learning rely heavily on specialized hardware such as GPUs or massively distributed architectures, our experiments run on a single machine with a standard multi-core CPU.
 
-As the gradient are calculated on a CPU, there's no need to batch large amount of data to optimize performances, as would be the case with a GPU. As a result the updates are performed asynchronously: each agent performs a number of training steps then performs an asynchronous updates with the global parameters.
+Since the gradients are calculated on a CPU, there's no need to batch large amount of data to optimize performance. As a result, the updates are performed asynchronously: each agent performs a number of training steps then performs an asynchronous updates with the global parameters.
 
 Here's the algorithm as pseudocode: [^original]
 
@@ -61,18 +64,20 @@ The evaluation is performed on four different platforms:
 - The [Mujoco](mujoco.md) domain, using 14 tasks
 - A custom "labyrinth" environment (subsequently released as [DeepMind Lab](dm-lab.md))
  
-It results in faster learning in almost all cases. The results are most impressive when combining the parallel framework with advantage actor-critic. See for example the last line of these benchmarks on 3 Atari games: [^original]
+Parallel methods learn faster in almost all cases. The results are most impressive when combining the parallel framework with advantage actor-critic. See for example the last line of these benchmarks on 3 Atari games: [^original]
+
 ![atari evaluation](img/a3c_evaluation.png)
 
-The resulting method is A3C, the "Asynchronous Advantage Actor Critic" - this paper's claim to fame!
+The resulting method is **A3C**, the "Asynchronous Advantage Actor Critic" - this paper's claim to fame!
 
-The paper then provide in-depth evaluation of A3C on the Atari domain, using the complete Atari test suite of 57 games. 
-Looking at mean performance, A3C reaches state of the art status, training twice faster than its competition: [^original]
+The paper then provide in-depth evaluation of A3C on the Atari domain, using the complete test suite of 57 games. 
+Looking at mean performances, A3C reaches state of the art status, training twice faster than its competition: [^original]
+
 ![atari evaluation](img/a3c_final_results.png)
 
 It should be noted that the question of [evaluation of RL agents](how-to-benchmark.md), and more specifically evaluation when using Atari games, has been hotly debated since this paper came out. The use of the mean performance is no longer regarded as reliable as some games can easily skew the final ranking.
 
-A3C in details
+Extra improvements
 ---
 
 Beyond its parallel nature, A3C includes a number of improvements compared to vanilla [advantage actor critic](actor-critic.md):
