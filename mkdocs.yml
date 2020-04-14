@@ -14,8 +14,9 @@ nav:
   - Notebooks:
       - 'Test notebook 1': notebooks/RL_Research_Workflow.ipynb
       - 'Test notebook 2': notebooks/Title_of_the_notebook.ipynb
-  - FAQ:
+  - Blog:
       - notebook-pitfalls.md
+      - notebooks-long-tasks.md
 
 theme:
   name: 'material'
