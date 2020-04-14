@@ -22,3 +22,8 @@
 body > div > main > div > div.md-content > article > hr {
     display: none;
 }
+
+/* Hide cell output overflow */
+.output pre {
+    overflow: scroll;
+}

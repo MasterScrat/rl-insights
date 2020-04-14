@@ -11,6 +11,11 @@ nav:
   - Papers:
       - curl.md
       - a3c.md
+  - Notebooks:
+      - 'Test notebook 1': notebooks/RL_Research_Workflow.ipynb
+      - 'Test notebook 2': notebooks/Title_of_the_notebook.ipynb
+  - FAQ:
+      - notebook-pitfalls.md
 
 theme:
   name: 'material'
@@ -21,6 +26,9 @@ theme:
 plugins:
   - search
   - git-revision-date-localized
+  - mknotebooks:
+      enable_default_jupyter_cell_styling: true
+      enable_default_pandas_dataframe_styling: true
   - minify:
       minify_html: true
 
@@ -29,9 +37,19 @@ markdown_extensions:
   - footnotes
   - toc:
       permalink: true
+  - pymdownx.arithmatex
+  - pymdownx.emoji:
+      emoji_index: !!python/name:pymdownx.emoji.twemoji
+      emoji_generator: !!python/name:pymdownx.emoji.to_svg
+  - codehilite:
+      linenums: false
 
 extra_css:
   - 'stylesheets/extra.css'
+
+extra_javascript:
+  - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML
+  - 'js/extra.js'
 
 google_analytics:
   - UA-36471625-6
