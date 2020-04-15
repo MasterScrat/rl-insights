@@ -1,7 +1,8 @@
 # Notebook Pitfalls
 
-!!! hint
-    This concept is not directly related to reinforcement learning, however, it is still relevant to RL researchers! 
+!!! tldr
+    - The execution flow of notebooks makes it easy to get confused by stale states.
+    - Code assist (autocomplete, refactoring, linting) is poor compared to modern IDEs. 
 
 Notebooks are a great way to run quick experiments and exploratory data analysis. They're also perfect to show off your work. Services such as [Google Colab](https://colab.research.google.com/) and [MyBinder](https://mybinder.org/) even provide free compute in the form of notebooks. What's not to love?
 

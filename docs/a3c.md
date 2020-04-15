@@ -3,27 +3,26 @@
 !!! tldr
     - Introduces an RL framework that uses multiple CPU cores to speed up training on a single machine.
     - The main result is A3C, a parallel actor-critic method that uses shared layers between actor and critic, n-step returns and entropy regularization.
-    - Parallel training for value-based methods is also investigated, but results are less convincing.
-    - A synchronous version called A2C, geared towards GPUs, is generally preferred nowadays.[^a2c]
+    - A synchronous version called A2C, optimized for GPUs, is generally preferred nowadays.[^a2c]
      
     **February 2016 - [arXiv](https://arxiv.org/abs/1602.01783)**
 
 Scaling up RL
 ---
 
-This paper introduces a multi-threaded RL training framework. Its main result is the **A3C algorithm**, which at the time of publication beat the state of the art on the Atari domain while training for only half the time. The core idea is to scale up training by using the multiple CPU cores available on modern workstations.  
+This paper introduces a multi-threaded training framework. Its main result is the **A3C algorithm**. When this paper came out, it beat the state of the art on Atari games while training for only half the time! The core idea is to scale up training by using the multiple CPU cores.  
 
-Scaling up the training process brings two advantages:
+Scaling up training brings two advantages:
 
-- It enables shorter training times, as it allows us to throw more compute at the problem
-- It helps stabilize training, by decorrelating the experiences observed by the agent
+- Shorter training times: we can throw more compute at the problem
+- More stable training: it decorrelates the experiences observed by the agent
 
-Decorreleting experiences
+Decorrelating experiences
 ---
 
-A common problem in reinforcement learning is the correlation and non-stationarity of successive experiences. When using off-policy methods such as [DQN](dqn.md), it is possible to use a [replay buffer](experience-replay.md) to store experiences then sample them randomly. This is more complicated when using on-policy algorithms such as [policy gradient methods](policy-gradient-methods.md), as they can't reuse past experiences.
+A common problem in reinforcement learning is the correlation between successive experiences. When using off-policy methods such as [DQN](dqn.md), it is possible to use a [replay buffer](experience-replay.md) to store previous experiences that can then be sampled randomly. This is more complicated when using on-policy algorithms such as [policy gradient methods](policy-gradient-methods.md), as they can't reuse past experiences.
 
-The proposed framework addresses this problem by executing multiple agents in parallel:
+The proposed framework solves this problem by executing multiple agents in parallel:
 
 > Instead of experience replay, we asynchronously execute multiple agents in parallel, on multiple instances of the environment. This parallelism decorrelates the agents’ data into a more stationary process, since at any given timestep the parallel agents will be experiencing a variety of different states.
 
@@ -35,52 +34,49 @@ For off-policy methods, this is a memory vs compute trade-off:
 Note that it would be possible to combine a replay buffer - either central or separate per worker - with parallel agents. 
 Going in this direction leads us to architectures such as Gorila or Ape-X.
 
-For on-policy methods, there is no downside to using parallel agents, as they can't learn from previous experiences! (Following this publication other methods came up to address this limitation such as [ACER](acer.md), [IMPALA](impala.md) and others.)
+For on-policy methods, there is no downside to using parallel agents, as these methods can't learn from previous experiences! (Following this publication other algorithms came up to address this limitation such as [ACER](acer.md), [IMPALA](impala.md) and others.)
 
 Implementation details
 ---
 
-A stated goal of this framework is to leverage multi-cores CPUs without relying on GPUs:
+One of the goals of this framework is to take advantage of multi-cores CPUs without relying on GPUs:
 
 > Our parallel reinforcement learning paradigm also offers practical benefits. Whereas previous approaches to deep reinforcement learning rely heavily on specialized hardware such as GPUs or massively distributed architectures, our experiments run on a single machine with a standard multi-core CPU.
 
-Since the gradients are calculated on a CPU, there's no need to batch large amount of data to optimize performance. As a result, the updates are performed asynchronously: each agent performs a number of training steps then performs an asynchronous updates with the global parameters.
+Since the gradients are calculated on the CPU, there's no need to batch large amount of data to optimize performance, as would be the case with a GPU. As a result, the updates are performed asynchronously: each agent performs a number of training steps, then updates the global parameters without having to care about the status of the other agents.
 
 Here's the algorithm as pseudocode: [^original]
 
 ![a3c algo](img/a3c_algo.png)
 
-Performing all the computation on the CPU of a single machine means that there is no communication overhead, and that updates can be done Hogwild-style without any locking.  
-
 Evaluation
 ---
 
-The paper first provides a comparison of multiple RL methods used within this framework: SARSA, deep Q-learning, n-step deep Q-learning, and advantage actor-critic.
+The training framework proposed in this paper could be used with any RL methods. In order to find which method works best, they try it out with SARSA, deep Q-learning, n-step deep Q-learning, and advantage actor-critic.
 
-The evaluation is performed on four different platforms:
+This evaluation is performed on four different platforms:
 
 - The traditional [Atari](atari.md) learning environment, using 5 games
 - The [Torcs](http://torcs.sourceforge.net/) driving simulator, using 4 game modes
 - The [Mujoco](mujoco.md) domain, using 14 tasks
-- A custom "labyrinth" environment (subsequently released as [DeepMind Lab](dm-lab.md))
- 
-Parallel methods learn faster in almost all cases. The results are most impressive when combining the parallel framework with advantage actor-critic. See for example the last line of these benchmarks on 3 Atari games: [^original]
+- A custom "labyrinth" environment (released afterward as [DeepMind Lab](dm-lab.md))
+
+Using the parallel framework almost always increases training speed. The results are especially impressive when combining it with the advantage actor-critic method. See for example the last line of these benchmarks on 3 Atari games: [^original]
 
 ![atari evaluation](img/a3c_evaluation.png)
 
-The resulting method is **A3C**, the "Asynchronous Advantage Actor Critic" - this paper's claim to fame!
+This method is called **A3C**, for "Asynchronous Advantage Actor Critic" - this paper's claim to fame!
 
-The paper then provide in-depth evaluation of A3C on the Atari domain, using the complete test suite of 57 games. 
-Looking at mean performances, A3C reaches state of the art status, training twice faster than its competition: [^original]
+The paper then provide an evaluation of A3C on 57 Atari games compared to the other top RL methods of the time. Looking at mean performances, A3C beats the state of the art while training twice faster than its competition: [^original]
 
 ![atari evaluation](img/a3c_final_results.png)
 
-It should be noted that the question of [evaluation of RL agents](how-to-benchmark.md), and more specifically evaluation when using Atari games, has been hotly debated since this paper came out. The use of the mean performance is no longer regarded as reliable as some games can easily skew the final ranking.
+It should be noted that the question of [evaluation of RL agents](how-to-benchmark.md), and more specifically evaluation when using Atari games, has been hotly debated since this paper came out. The use of mean performance for example is no longer regarded as reliable as some games can easily skew the final ranking.
 
 Extra improvements
 ---
 
-Beyond its parallel nature, A3C includes a number of improvements compared to vanilla [advantage actor critic](actor-critic.md):
+Beyond its parallel nature, A3C includes a number of other improvements compared to vanilla [advantage actor critic](actor-critic.md):
 
 - The layers are shared between the actor and the critic
 - Both actor and critic use n-step learning
@@ -91,11 +87,12 @@ Beyond its parallel nature, A3C includes a number of improvements compared to va
 From A3C to A2C
 ---
 
-Since this method is designed to train networks using a CPU, asynchronous updates made a lot of sense as it enabled [Hogwild syle](hogwild.md) updates. However, it appeared later on that this was not optimal when using a GPU. For this reason, this method is commonly used today in a synchronous way in which the updates from all the actor-learners are batched to make better use of the GPU. This non-asynchronous version is simply called **A2C** (Advantage Actor Critic) [^a2c].
+A3C was explicitly designed to take advantage of CPUs with many cores, and to not require a GPU. With this use case in mind, asynchronous updates made a lot of sense: they don't require any synchronisation between the agents, and parameter updates can be done [Hogwild syle](hogwild.md) without locking. 
 
-However, a different method called A2C, which does leverage GPUs, is preferred today.
+But GPUs are much more efficient then CPUs when optimizing large policies. When the policy becomes large enough, it starts making more sense to sacrifice asynchronous updates in order to feed large batches to a GPU. In that case, the agents don't compute the gradients themselves anymore. Instead, they perform a rollout and send the experiences to the master thread, which performs gradient updates in a synchronous way. 
 
-
+This non-asynchronous version is simply called **A2C** (Advantage Actor Critic) [^a2c]. It generally performs comparably to A3C in terms of final performance, but it trains even faster as it can take advantage of a GPU. The paper [Accelerated Methods for Deep Reinforcement Learning](accelerated-methods.md) provides advanced analysis between the two as well as optimization insights. 
+ 
 In hindsight
 ---
 

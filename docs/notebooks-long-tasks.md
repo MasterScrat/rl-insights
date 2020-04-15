@@ -1,7 +1,9 @@
 # Running Long Tasks in Notebooks
 
-!!! hint
-    This concept is not directly related to reinforcement learning, however, it is still relevant to RL researchers! 
+!!! tldr
+    - Notebooks are a great tool, but they're not adequate for long-running tasks.
+    - The problem is that only one cell can run at a time, which makes changes cumbersome when the notebook is already running.
+    - The solution is to turn your notebook into a Python file using Jupytext so you can run it in the background.
 
 Notebooks make it comfortable to quickly implement new research ideas. 
 You try things out with a toy dataset, and after a few iterations, you're reasonably sure that you got things right. 
@@ -10,6 +12,8 @@ Next step: trying it out on a more realistic dataset! This usually means having 
 In theory, nothing stops you from simply executing the notebook and letting it run for a few hours.
  
 In practice, this is generally a ***bad idea***.
+
+We will see why, and how to solve potential problems by integrating new tools to your workflow.
 
 Notebooks hinder your flow
 ---
@@ -43,7 +47,7 @@ If you are using [Google Colab](https://colab.research.google.com/), another ris
 
 Sure, you can mitigate this problem by using some form of checkpointing, but this is a band-aid. Couldn't notebooks handle this better? I have been keeping an eye on [two](https://github.com/jupyter/notebook/issues/1150) [separate](https://github.com/jupyterlab/jupyterlab/issues/2833) GitHub issues tracking this problem for a long time, and they are still open to this day.
 
-Git and jupytext to the rescue
+Git and Jupytext to the rescue
 ---
 
 So, what's the solution? It depends how long your task takes. 
