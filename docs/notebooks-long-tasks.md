@@ -47,7 +47,7 @@ If you are using [Google Colab](https://colab.research.google.com/), another ris
 
 Sure, you can mitigate this problem by using some form of checkpointing, but this is a band-aid. Couldn't notebooks handle this better? I have been keeping an eye on [two](https://github.com/jupyter/notebook/issues/1150) [separate](https://github.com/jupyterlab/jupyterlab/issues/2833) GitHub issues tracking this problem for a long time, and they are still open to this day.
 
-Git and Jupytext to the rescue
+Jupytext to the rescue
 ---
 
 So, what's the solution? It depends how long your task takes. 
@@ -58,7 +58,7 @@ For tasks that will run **for hours**, it is simply not reasonable to keep a bro
 
 But this is a lot of work! Couldn't that be automated? Yes it can!
 
-The solution is called [Jupytext](https://github.com/mwouts/jupytext). Jupytext takes a Python notebook as input, and turns it into a plain Python file. This gives you the best of both worlds! You can now easily run your experiment in the background, or on another machine, in a "fire and forget" way. You can easily run multiple instances, for example to perform some basic hyperparameter search or check variance across multiple seeds. And you can start your task using robust Unix tools such as `screen` and `tmux` to ensure it will run to completion. 
+The solution is called **[Jupytext](https://github.com/mwouts/jupytext)**. Jupytext takes a Python notebook as input, and turns it into a plain Python file. This gives you the best of both worlds! You can now easily run your experiment in the background, or on another machine, in a "fire and forget" way. You can easily run multiple instances, for example to perform some basic hyperparameter search or check variance across multiple seeds. And you can start your task using robust Unix tools such as `screen` and `tmux` to ensure it will run to completion. 
 
 Other notebook pitfalls
 ---
